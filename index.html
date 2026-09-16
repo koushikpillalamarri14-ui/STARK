@@ -175,21 +175,27 @@
 
     .suit-stage {
       position: relative;
-      width: 320px;
-      height: 420px;
+      width: 360px;
+      height: 440px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
     }
 
-    /* SVG Iron Man Suit Vector Art */
-    .ironman-svg {
-      width: 240px;
-      height: 380px;
-      filter: drop-shadow(0 0 15px var(--primary-glow));
-      transition: filter 0.3s ease;
+    /* High-Definition Iron Man Image Visualizer */
+    .ironman-img {
+      width: 260px;
+      height: 400px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px var(--primary));
+      transition: filter 0.3s ease, transform 0.2s ease;
       z-index: 10;
+    }
+
+    .suit-stage:hover .ironman-img {
+      transform: scale(1.02);
+      filter: drop-shadow(0 0 30px var(--primary));
     }
 
     /* HUD Spinning Rings behind Suit */
@@ -201,15 +207,31 @@
       pointer-events: none;
     }
 
-    .ring-bg-1 { width: 320px; height: 320px; animation: spin 25s linear infinite; }
+    .ring-bg-1 { width: 340px; height: 340px; animation: spin 25s linear infinite; }
     .ring-bg-2 { 
-      width: 240px; height: 240px; 
+      width: 260px; height: 260px; 
       border-style: solid; 
       border-color: var(--secondary) transparent var(--secondary) transparent;
       animation: spin-reverse 12s linear infinite;
     }
 
-    /* Realistic Repulsor Thrust Beams */
+    /* Glowing Chest Arc Overlay */
+    .arc-glow-point {
+      position: absolute;
+      top: 36%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, #ffffff 0%, var(--primary) 70%, transparent 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 30px var(--primary), 0 0 60px #fff;
+      z-index: 11;
+      pointer-events: none;
+      animation: pulse 1.5s ease-in-out infinite alternate;
+    }
+
+    /* Repulsor Beams */
     .repulsor-beam {
       position: absolute;
       width: 14px;
@@ -228,7 +250,7 @@
       100% { transform: scaleY(2) rotate(var(--angle)); opacity: 0; }
     }
 
-    /* Repulsor Energy Particle Sparks */
+    /* Repulsor Energy Spark Particles */
     .thrust-particle {
       position: absolute;
       width: 6px;
@@ -249,6 +271,8 @@
     /* Shockwave Expansion Ring */
     .shockwave-ring {
       position: absolute;
+      top: 36%; left: 50%;
+      transform: translate(-50%, -50%);
       width: 80px;
       height: 80px;
       border-radius: 50%;
@@ -260,11 +284,11 @@
     }
 
     @keyframes shockwave {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(5); opacity: 0; }
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(5); opacity: 0; }
     }
 
-    /* Metrics & Bars */
+    /* Metrics & Progress Bars */
     .metric-group { display: flex; flex-direction: column; gap: 6px; }
     .metric-label { display: flex; justify-content: space-between; font-size: 0.85rem; }
     .progress-track {
@@ -319,7 +343,7 @@
     /* Animations */
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(-360deg); } }
-    @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; } }
+    @keyframes pulse { 0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.8; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
     @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
 
     /* Footer */
@@ -340,7 +364,7 @@
   <!-- Header Navbar -->
   <header>
     <div class="brand">
-      E.D.I.T.H. SYSTEM <span class="status-badge">MARK LXXXV SUIT</span>
+      E.D.I.T.H. SYSTEM <span class="status-badge">MARK LXXXV ARMOR</span>
     </div>
     <div class="nav-buttons">
       <button class="btn" onclick="scrollToSection('hero')">Armor HUD</button>
@@ -354,48 +378,27 @@
   <!-- Main Container -->
   <div class="container">
     
-    <!-- Hero Section: Full Iron Man Suit HUD Visualizer -->
+    <!-- Hero Section: Full Iron Man Suit Visualizer -->
     <section class="panel suit-panel" id="hero">
-      <h1 style="color:var(--primary); letter-spacing: 3px;">MARK LXXXV ARMOR HUD</h1>
-      <p style="font-size: 0.9rem; color: #a0c0d0; margin-top: 5px;">Integrated Nanotech Armor & Arc Repulsor Engine</p>
+      <h1 style="color:var(--primary); letter-spacing: 3px;">MARK LXXXV SUIT HUD</h1>
+      <p style="font-size: 0.9rem; color: #a0c0d0; margin-top: 5px;">Integrated Armor Matrix & Repulsor Thruster Engine</p>
       
       <div class="suit-stage" id="suit-stage" onclick="fireFullArmorThrust()">
         <div class="hud-ring ring-bg-1"></div>
         <div class="hud-ring ring-bg-2"></div>
+        <div class="arc-glow-point" id="arc-glow"></div>
         
-        <!-- SVG Vector Art of Full Iron Man Armor -->
-        <svg class="ironman-svg" viewBox="0 0 200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Helmet -->
-          <path d="M75 35 C75 15, 125 15, 125 35 L130 65 L70 65 Z" fill="#cc1100" stroke="var(--primary)" stroke-width="2"/>
-          <path d="M82 45 L118 45 L122 60 L78 60 Z" fill="#ffe600"/>
-          <!-- Glowing HUD Eyes -->
-          <polygon points="85,50 97,50 94,54 87,54" fill="#00f3ff" id="eye-left"/>
-          <polygon points="103,50 115,50 113,54 106,54" fill="#00f3ff" id="eye-right"/>
-          
-          <!-- Torso & Shoulders -->
-          <path d="M50 75 L150 75 L140 160 L60 160 Z" fill="#990000" stroke="var(--primary)" stroke-width="2"/>
-          <path d="M70 75 L130 75 L120 120 L80 120 Z" fill="#ffe600" opacity="0.8"/>
-          
-          <!-- Arc Reactor Core -->
-          <polygon points="100,90 115,102 109,122 91,122 85,102" fill="#ffffff" stroke="var(--primary)" stroke-width="3" id="svg-arc-core"/>
-          <circle cx="100" cy="107" r="8" fill="#00f3ff" id="svg-arc-glow"/>
-
-          <!-- Arms & Repulsor Palms -->
-          <path d="M35 85 L50 75 L60 150 L40 150 Z" fill="#cc1100" stroke="var(--primary)" stroke-width="1.5"/>
-          <path d="M165 85 L150 75 L140 150 L160 150 Z" fill="#cc1100" stroke="var(--primary)" stroke-width="1.5"/>
-          <circle cx="38" cy="145" r="5" fill="#00f3ff" id="palm-left"/>
-          <circle cx="162" cy="145" r="5" fill="#00f3ff" id="palm-right"/>
-
-          <!-- Legs -->
-          <path d="M65 165 L95 165 L90 290 L70 290 Z" fill="#990000" stroke="var(--primary)" stroke-width="1.5"/>
-          <path d="M135 165 L105 165 L110 290 L130 290 Z" fill="#990000" stroke="var(--primary)" stroke-width="1.5"/>
-          <path d="M75 180 L92 180 L88 240 L73 240 Z" fill="#ffe600"/>
-          <path d="M125 180 L108 180 L112 240 L127 240 Z" fill="#ffe600"/>
-        </svg>
+        <!-- Full-Body Iron Man PNG -->
+        <img 
+          src="https://pngimg.com/uploads/ironman/ironman_PNG39.png" 
+          alt="Iron Man Suit" 
+          class="ironman-img" 
+          id="ironman-img"
+        />
       </div>
 
       <p style="font-size:0.85rem; color:var(--primary); letter-spacing: 2px;">
-        [ CLICK SUIT HUD TO FIRE ARC REACTOR & PALM REPULSOR THRUST ]
+        [ CLICK SUIT TO EMIT REPULSOR THRUSTERS & SHOCKWAVE ]
       </p>
     </section>
 
@@ -447,11 +450,11 @@
           <span style="color:var(--primary);">ACTIVE</span>
         </div>
         <div class="terminal" id="terminal">
-          > E.D.I.T.H. Interface Loaded...<br/>
-          > Armor HUD synchronized.<br/>
-          > Voice feedback online.<br/>
+          > E.D.I.T.H. System Loaded...<br/>
+          > Iron Man Suit HUD Rendered.<br/>
+          > Voice synth initialized.<br/>
         </div>
-        <button class="btn" onclick="speakEdith('All suit systems online. Awaiting command.')">Test Voice Feedback</button>
+        <button class="btn" onclick="speakEdith('Hello Peter. All Iron Man armor systems are active.')">Test Voice Feedback</button>
       </div>
 
       <div class="panel">
@@ -516,7 +519,7 @@
       document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Sound FX Synthesis
+    // Audio FX Generator
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playAudioTone(freq = 600, type = 'sine', duration = 0.1) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -532,7 +535,7 @@
       osc.stop(audioCtx.currentTime + duration);
     }
 
-    // E.D.I.T.H Voice Filter
+    // E.D.I.T.H. Voice Synthesis
     let voicesList = [];
     function loadVoices() {
       if ('speechSynthesis' in window) {
@@ -580,17 +583,15 @@
       playAudioTone(800, 'sine', 0.05);
     }
 
-    // REALISTIC ARMOR REPULSOR & ARC THRUST ENGINE
+    // ARMOR REPULSOR & ARC THRUST ENGINE
     function fireFullArmorThrust() {
       const stage = document.getElementById('suit-stage');
-      const arcCore = document.getElementById('svg-arc-core');
-      const arcGlow = document.getElementById('svg-arc-glow');
+      const arcGlow = document.getElementById('arc-glow');
 
-      // Arc Core brightness burst
-      arcCore.setAttribute('fill', '#ffffff');
-      arcGlow.setAttribute('r', '14');
-      
-      // 1. Fire directional repulsor thrust beams from Arc Chest
+      // Surge Chest Arc Glow
+      arcGlow.style.boxShadow = "0 0 80px var(--primary), 0 0 120px #ffffff";
+
+      // 1. Emit 8 Directional Beam Beams
       const angles = [0, 45, 90, 135, 180, 225, 270, 315];
       angles.forEach(angle => {
         const beam = document.createElement('div');
@@ -626,8 +627,7 @@
       playAudioTone(220, 'sawtooth', 0.5);
 
       setTimeout(() => {
-        arcCore.setAttribute('fill', '#ffffff');
-        arcGlow.setAttribute('r', '8');
+        arcGlow.style.boxShadow = "";
       }, 600);
     }
 
