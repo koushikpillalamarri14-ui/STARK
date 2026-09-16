@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>STARK OS - F.R.I.D.A.Y INTERFACE</title>
+  <title>STARK OS - MARK LXXXV DASHBOARD</title>
   <style>
     :root {
       --primary: #00f3ff;
@@ -11,9 +11,9 @@
       --secondary: #ff3300;
       --secondary-glow: rgba(255, 51, 0, 0.4);
       --accent: #ffe600;
-      --bg: #030a16;
-      --panel-bg: rgba(2, 16, 36, 0.75);
-      --glass-border: rgba(0, 243, 255, 0.3);
+      --bg: #020813;
+      --panel-bg: rgba(4, 18, 38, 0.75);
+      --glass-border: rgba(0, 243, 255, 0.35);
       --text: #e0f7fc;
       --font-family: 'Consolas', 'Courier New', monospace;
     }
@@ -24,43 +24,42 @@
       background-color: var(--bg);
       color: var(--text);
       font-family: var(--font-family);
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      min-height: 100vh;
+      overflow-x: hidden;
       background-image: 
         radial-gradient(circle at center, rgba(0, 243, 255, 0.08) 0%, transparent 70%),
         linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-      background-size: 100% 100%, 40px 40px, 40px 40px;
+      background-size: 100% 100%, 30px 30px, 30px 30px;
     }
 
-    /* HUD Overlay Effects */
+    /* HUD Scanlines Overlay */
     .scanline {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
       background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
       background-size: 100% 4px;
       pointer-events: none;
-      z-index: 99;
+      z-index: 999;
     }
 
-    /* Top Navigation Bar */
+    /* Fixed Navigation Header */
     header {
+      position: sticky;
+      top: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 25px;
+      padding: 15px 30px;
       border-bottom: 2px solid var(--glass-border);
-      background: var(--panel-bg);
-      backdrop-filter: blur(12px);
-      z-index: 10;
-      box-shadow: 0 0 15px var(--primary-glow);
+      background: rgba(2, 10, 24, 0.9);
+      backdrop-filter: blur(15px);
+      z-index: 100;
+      box-shadow: 0 0 20px var(--primary-glow);
     }
 
     .brand {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: bold;
       color: var(--primary);
       text-shadow: 0 0 10px var(--primary);
@@ -70,7 +69,7 @@
       letter-spacing: 2px;
     }
 
-    .status-pill {
+    .status-badge {
       font-size: 0.75rem;
       padding: 3px 10px;
       border: 1px solid var(--primary);
@@ -78,82 +77,110 @@
       animation: pulse 2s infinite;
     }
 
-    /* App Launcher Grid */
-    .app-launcher {
-      display: flex;
-      gap: 10px;
-    }
+    .nav-buttons { display: flex; gap: 10px; }
 
-    .app-btn {
-      background: rgba(0, 243, 255, 0.1);
+    /* Buttons Style */
+    .btn {
+      background: rgba(0, 243, 255, 0.08);
       border: 1px solid var(--primary);
       color: var(--primary);
-      padding: 6px 14px;
+      padding: 10px 16px;
       font-family: var(--font-family);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
+      font-weight: bold;
       cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
       border-radius: 4px;
-      transition: all 0.2s ease;
     }
 
-    .app-btn:hover {
+    .btn:hover {
       background: var(--primary);
       color: #000;
-      box-shadow: 0 0 10px var(--primary);
+      box-shadow: 0 0 15px var(--primary);
     }
 
-    /* Main Workspace Grid */
-    main {
+    .btn-alert { border-color: var(--secondary); color: var(--secondary); }
+    .btn-alert:hover { background: var(--secondary); color: #fff; box-shadow: 0 0 15px var(--secondary); }
+
+    /* Long Scrollable Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* Grid Layouts */
+    .grid-3 {
       display: grid;
-      grid-template-columns: 320px 1fr 340px;
-      gap: 15px;
-      padding: 15px;
-      flex-grow: 1;
-      height: calc(100vh - 110px);
-      z-index: 2;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
     }
 
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* HUD Panels */
     .panel {
       background: var(--panel-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 6px;
-      padding: 15px;
+      border-radius: 8px;
+      padding: 20px;
       backdrop-filter: blur(10px);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 15px;
       position: relative;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
     }
 
-    .panel-header {
-      font-size: 0.9rem;
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: 15px; right: 15px; height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .panel-title {
+      font-size: 1rem;
       color: var(--primary);
       border-bottom: 1px dashed var(--glass-border);
-      padding-bottom: 6px;
+      padding-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       display: flex;
       justify-content: space-between;
     }
 
-    /* Arc Reactor Visualizer */
-    .viewport {
-      position: relative;
+    /* Arc Reactor Hero Section */
+    .hero-panel {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      overflow: hidden;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
     }
 
     .arc-reactor {
       position: relative;
-      width: 240px;
-      height: 240px;
+      width: 260px;
+      height: 260px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      margin: 20px 0;
     }
 
     .ring {
@@ -163,278 +190,237 @@
       box-shadow: 0 0 15px var(--primary-glow);
     }
 
-    .ring-1 { width: 230px; height: 230px; animation: spin 25s linear infinite; }
-    .ring-2 { 
-      width: 170px; height: 170px; 
+    .ring-outer { width: 250px; height: 250px; animation: spin 20s linear infinite; }
+    .ring-mid { 
+      width: 180px; height: 180px; 
       border-style: solid; 
       border-color: var(--secondary) transparent var(--secondary) transparent;
-      animation: spin-reverse 12s linear infinite;
+      animation: spin-reverse 10s linear infinite;
     }
     .ring-core {
-      width: 100px; height: 100px;
+      width: 110px; height: 110px;
       background: radial-gradient(circle, #fff 0%, var(--primary) 60%, transparent 100%);
-      box-shadow: 0 0 40px var(--primary), inset 0 0 20px #fff;
+      box-shadow: 0 0 50px var(--primary), inset 0 0 25px #fff;
       animation: pulse 1.5s ease-in-out infinite alternate;
     }
 
-    /* Interactive Desktop Apps Modal Windows */
-    .window-modal {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 480px;
-      background: rgba(1, 10, 25, 0.95);
-      border: 2px solid var(--primary);
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 0 30px var(--primary-glow);
-      display: none;
-      flex-direction: column;
-      gap: 15px;
-      z-index: 20;
-    }
-
-    .window-modal.active { display: flex; }
-
-    /* Interactive Map Widget */
-    .hud-map {
-      width: 100%;
-      height: 140px;
-      border: 1px solid var(--glass-border);
-      background: radial-gradient(circle, rgba(0,243,255,0.1) 0%, transparent 80%),
-                  linear-gradient(0deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
-      background-size: 100% 100%, 10px 10px;
-      position: relative;
-      overflow: hidden;
-      border-radius: 4px;
-    }
-
-    .map-ping {
-      position: absolute;
-      top: 40%; left: 60%;
-      width: 8px; height: 8px;
-      background: var(--secondary);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--secondary);
-      animation: ping 1.5s infinite;
-    }
-
-    /* System Diagnostics Bars */
-    .metric-group { display: flex; flex-direction: column; gap: 4px; }
-    .metric-label { display: flex; justify-content: space-between; font-size: 0.75rem; }
+    /* Metrics and Progress Bars */
+    .metric-group { display: flex; flex-direction: column; gap: 6px; }
+    .metric-label { display: flex; justify-content: space-between; font-size: 0.85rem; }
     .progress-track {
-      width: 100%; height: 6px;
+      width: 100%; height: 8px;
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
+      border-radius: 4px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
       background: var(--primary);
-      box-shadow: 0 0 8px var(--primary);
-      width: 70%;
-      transition: width 0.4s ease;
+      box-shadow: 0 0 10px var(--primary);
+      width: 80%;
+      transition: width 0.5s ease;
     }
 
-    /* Terminal Console */
-    .terminal {
-      background: rgba(0, 0, 0, 0.7);
+    /* Radar Map Box */
+    .hud-map {
+      width: 100%;
+      height: 200px;
       border: 1px solid var(--glass-border);
-      border-radius: 4px;
-      padding: 10px;
-      font-size: 0.8rem;
-      height: 160px;
+      background: radial-gradient(circle, rgba(0,243,255,0.1) 0%, transparent 80%),
+                  linear-gradient(0deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+      background-size: 100% 100%, 15px 15px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+    }
+
+    .map-ping {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: var(--secondary);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--secondary);
+      animation: ping 1.5s infinite;
+    }
+
+    /* Terminal Window */
+    .terminal {
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      padding: 15px;
+      font-size: 0.85rem;
+      height: 200px;
       overflow-y: auto;
       color: #00ffaa;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
-    /* Buttons */
-    .btn {
-      background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      padding: 8px 12px;
-      font-family: var(--font-family);
-      font-size: 0.8rem;
-      font-weight: bold;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: all 0.2s ease;
-      border-radius: 4px;
-    }
-
-    .btn:hover {
-      background: var(--primary);
-      color: #000;
-      box-shadow: 0 0 12px var(--primary);
-    }
-
-    .btn-alert { border-color: var(--secondary); color: var(--secondary); }
-    .btn-alert:hover { background: var(--secondary); color: #fff; box-shadow: 0 0 12px var(--secondary); }
-
-    /* Animations */
+    /* Keyframe Animations */
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(-360deg); } }
-    @keyframes pulse { 0% { transform: scale(0.96); opacity: 0.8; } 100% { transform: scale(1.04); opacity: 1; } }
+    @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; } }
     @keyframes ping { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
 
-    /* Footer Status */
+    /* Footer */
     footer {
-      padding: 8px 25px;
+      padding: 20px 30px;
       border-top: 1px solid var(--glass-border);
-      background: var(--panel-bg);
+      background: rgba(2, 10, 24, 0.95);
       display: flex;
       justify-content: space-between;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: rgba(224, 247, 252, 0.7);
-      z-index: 10;
     }
   </style>
 </head>
 <body>
   <div class="scanline"></div>
 
-  <!-- Top Navigation Header -->
+  <!-- Header Navbar -->
   <header>
     <div class="brand">
-      STARK OS <span class="status-pill">MARK LXXXV</span>
+      STARK OS <span class="status-badge">MARK LXXXV</span>
     </div>
-
-    <!-- App Switcher -->
-    <div class="app-launcher">
-      <button class="app-btn" onclick="openWindow('suit-win')">Suit Telemetry</button>
-      <button class="app-btn" onclick="openWindow('radar-win')">Global Radar</button>
-      <button class="app-btn" onclick="openWindow('armory-win')">Armory Protocol</button>
+    <div class="nav-buttons">
+      <button class="btn" onclick="scrollToSection('hero')">Arc Core</button>
+      <button class="btn" onclick="scrollToSection('telemetry')">Telemetry</button>
+      <button class="btn" onclick="scrollToSection('radar')">Radar</button>
+      <button class="btn" onclick="scrollToSection('armory')">Armory</button>
     </div>
-
     <div id="clock">00:00:00 UTC</div>
   </header>
 
-  <!-- Workspace Grid -->
-  <main>
-    <!-- Left Sidebar: Suit Status -->
-    <section class="panel">
-      <div class="panel-header">
-        <span>Suit Telemetry</span>
-        <span style="color:var(--accent)">ONLINE</span>
+  <!-- Page Content Container -->
+  <div class="container">
+    
+    <!-- Section 1: Arc Core Hero -->
+    <section class="panel hero-panel" id="hero">
+      <h1 style="color:var(--primary); letter-spacing: 3px;">MARK LXXXV CORE MATRIX</h1>
+      <p style="font-size: 0.9rem; color: #a0c0d0; margin-top: 5px;">Tactical Defense & Voice Diagnostic Hub</p>
+      
+      <div class="arc-reactor" onclick="pulseReactor()">
+        <div class="ring ring-outer"></div>
+        <div class="ring ring-mid"></div>
+        <div class="ring-core" id="core"></div>
       </div>
 
-      <div class="metric-group">
-        <div class="metric-label">
-          <span>ARC REACTOR OUTPUT</span>
-          <span id="power-val">98%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="power-bar" style="width: 98%;"></div>
-        </div>
-      </div>
-
-      <div class="metric-group">
-        <div class="metric-label">
-          <span>NANOTECH INTEGRITY</span>
-          <span id="nano-val">88%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="nano-bar" style="width: 88%; background: var(--accent);"></div>
-        </div>
-      </div>
-
-      <div class="metric-group">
-        <div class="metric-label">
-          <span>THRUSTER CHARGE</span>
-          <span id="thrust-val">100%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="thrust-bar" style="width: 100%;"></div>
-        </div>
-      </div>
-
-      <div class="panel-header" style="margin-top: 10px;">Target Tracking</div>
-      <div class="hud-map">
-        <div class="map-ping"></div>
-      </div>
-
-      <button class="btn" onclick="runDiagnostics()">Run Diagnostics</button>
-      <button class="btn btn-alert" onclick="toggleOverdrive()">Engage Overdrive</button>
-    </section>
-
-    <!-- Center Viewport: Interactive HUD Core -->
-    <section class="viewport panel">
-      <div class="arc-reactor" onclick="triggerCorePulse()">
-        <div class="ring ring-1"></div>
-        <div class="ring ring-2"></div>
-        <div class="ring-core" id="reactor-core"></div>
-      </div>
-      <p style="text-align:center; font-size: 0.8rem; letter-spacing: 2px; margin-top: 15px; color: var(--primary);">
-        [ CLICK REACTOR CORE TO RELEASE ENERGY PULSE ]
+      <p style="font-size:0.85rem; color:var(--primary); letter-spacing: 2px;">
+        [ CLICK ARC REACTOR CORE TO TRIGGER REPULSOR PULSE ]
       </p>
+    </section>
 
-      <!-- Dynamic App Window Modals -->
-      <div class="window-modal" id="suit-win">
-        <div class="panel-header">
-          <span>Suit Status & Diagnostics</span>
-          <button class="app-btn" onclick="closeWindow('suit-win')">X</button>
+    <!-- Section 2: Telemetry Metrics Grid -->
+    <section class="grid-3" id="telemetry">
+      <!-- Suit Telemetry Panel -->
+      <div class="panel">
+        <div class="panel-title">
+          <span>Suit Status</span>
+          <span style="color:var(--accent);">NOMINAL</span>
         </div>
-        <p style="font-size:0.85rem; line-height: 1.5;">
-          All suit systems operational. Nanotech density at optimal matrix distribution. Flight stabilizer gyros synchronized.
+        
+        <div class="metric-group">
+          <div class="metric-label">
+            <span>ARC POWER</span>
+            <span id="power-val">98%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="power-bar" style="width: 98%;"></div>
+          </div>
+        </div>
+
+        <div class="metric-group">
+          <div class="metric-label">
+            <span>NANOTECH DENSITY</span>
+            <span id="nano-val">92%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="nano-bar" style="width: 92%; background: var(--accent);"></div>
+          </div>
+        </div>
+
+        <div class="metric-group">
+          <div class="metric-label">
+            <span>THRUSTER CAPACITY</span>
+            <span id="thrust-val">100%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="thrust-bar" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <button class="btn" onclick="runDiagnostics()">Run System Diagnostics</button>
+        <button class="btn btn-alert" onclick="toggleOverdrive()">Toggle Overdrive Mode</button>
+      </div>
+
+      <!-- F.R.I.D.A.Y Voice & Controls -->
+      <div class="panel">
+        <div class="panel-title">
+          <span>F.R.I.D.A.Y Console</span>
+          <span style="color:var(--primary);">ACTIVE</span>
+        </div>
+        <div class="terminal" id="terminal">
+          > STARK OS Initialized...<br/>
+          > F.R.I.D.A.Y Voice AI Standby...<br/>
+          > All satellite connections verified.<br/>
+        </div>
+        <button class="btn" onclick="speakVoice('F.R.I.D.A.Y voice system online and responding.')">Test Voice Feedback</button>
+      </div>
+
+      <!-- Flight Systems Panel -->
+      <div class="panel">
+        <div class="panel-title">
+          <span>Flight Controls</span>
+          <span>AUTO-STABILIZED</span>
+        </div>
+        <p style="font-size:0.85rem; line-height: 1.5; color:#a0c0d0;">
+          Mach 3 atmosphere stabilizers enabled. Repulsor vectors aligned for urban low-altitude navigation.
         </p>
-        <button class="btn" onclick="speakVoice('Suit systems operating at peak efficiency.')">Read Diagnostics</button>
+        <button class="btn" onclick="triggerProtocol('Supersonic Flight Vector')">Deploy Thrusters</button>
+        <button class="btn" onclick="triggerProtocol('Hover Mode')">Engage Hover Mode</button>
+      </div>
+    </section>
+
+    <!-- Section 3: Radar and Armory Grid -->
+    <section class="grid-2" id="radar">
+      <!-- Radar Tracking Panel -->
+      <div class="panel">
+        <div class="panel-title">
+          <span>Global Radar Satellite Track</span>
+          <span style="color:var(--secondary);">2 TARGETS IN RANGE</span>
+        </div>
+        <div class="hud-map">
+          <div class="map-ping" style="top: 30%; left: 40%;"></div>
+          <div class="map-ping" style="top: 65%; left: 75%; background: var(--accent);"></div>
+        </div>
+        <button class="btn" onclick="logToTerminal('Scanning orbital quadrant sector 04...')">Scan Target Sector</button>
       </div>
 
-      <div class="window-modal" id="radar-win">
-        <div class="panel-header">
-          <span>Satellite Orbital Radar</span>
-          <button class="app-btn" onclick="closeWindow('radar-win')">X</button>
+      <!-- Tactical Armory Panel -->
+      <div class="panel" id="armory">
+        <div class="panel-title">
+          <span>Tactical Armory Protocol</span>
+          <span style="color:var(--accent);">ARMED</span>
         </div>
-        <div class="hud-map" style="height: 180px;">
-          <div class="map-ping" style="top: 25%; left: 30%;"></div>
-          <div class="map-ping" style="top: 70%; left: 75%; background: var(--accent);"></div>
-        </div>
-        <button class="btn" onclick="logToTerminal('Scanning orbital quadrant 07...')">Scan Global Sector</button>
-      </div>
-
-      <div class="window-modal" id="armory-win">
-        <div class="panel-header">
-          <span>Weapons & Defense Matrix</span>
-          <button class="app-btn" onclick="closeWindow('armory-win')">X</button>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn" onclick="triggerProtocol('Repulsor Cannon Overcharge')">Repulsor Cannons</button>
-          <button class="btn" onclick="triggerProtocol('Unibeam Core Array')">Unibeam Array</button>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <button class="btn" onclick="triggerProtocol('Repulsor Cannon Array')">Repulsor Cannons</button>
+          <button class="btn" onclick="triggerProtocol('Unibeam Core Overcharge')">Unibeam Core Array</button>
           <button class="btn btn-alert" onclick="triggerProtocol('Micro-Missile Salvo')">Deploy Micro-Missiles</button>
+          <button class="btn btn-alert" onclick="triggerProtocol('House Party Protocol')">House Party Protocol</button>
         </div>
       </div>
     </section>
 
-    <!-- Right Sidebar: F.R.I.D.A.Y Voice & Terminal -->
-    <section class="panel">
-      <div class="panel-header">
-        <span>F.R.I.D.A.Y Console</span>
-        <span style="color:var(--primary);">ACTIVE</span>
-      </div>
+  </div>
 
-      <div class="terminal" id="terminal">
-        > STARK OS v8.5 Online...<br/>
-        > Connecting to Stark Satellite Network...<br/>
-        > Voice Assistant (F.R.I.D.A.Y) Standby.<br/>
-      </div>
-
-      <button class="btn" onclick="triggerProtocol('House Party Protocol')">House Party Protocol</button>
-      <button class="btn" onclick="triggerProtocol('Clean Slate')">Clean Slate Protocol</button>
-      <button class="btn btn-alert" onclick="triggerProtocol('Barnell Emergency Eject')">Emergency Eject</button>
-    </section>
-  </main>
-
-  <!-- Footer Info -->
+  <!-- Footer -->
   <footer>
     <div>SYSTEM STATUS: NOMINAL // PROTOCOL STARK-85</div>
     <div>STARK INDUSTRIES DIGITAL ECOSYSTEM © 2026</div>
   </footer>
 
   <script>
-    // System Clock
+    // Real-Time Clock
     function updateClock() {
       const now = new Date();
       document.getElementById('clock').innerText = now.toTimeString().split(' ')[0] + ' UTC';
@@ -442,7 +428,12 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Sound FX Generator via Web Audio API
+    // Smooth Scroll Navigation
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Sound FX Synthesis using Web Audio API
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playAudioTone(freq = 600, type = 'sine', duration = 0.1) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -458,7 +449,7 @@
       osc.stop(audioCtx.currentTime + duration);
     }
 
-    // Voice Synthesis (F.R.I.D.A.Y Speech)
+    // Voice Synthesis (F.R.I.D.A.Y Voice)
     function speakVoice(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -469,7 +460,7 @@
       }
     }
 
-    // Console Logger
+    // Terminal Logger
     function logToTerminal(msg) {
       const terminal = document.getElementById('terminal');
       terminal.innerHTML += `> ${msg}<br/>`;
@@ -477,25 +468,26 @@
       playAudioTone(800, 'sine', 0.05);
     }
 
-    // Arc Core Energy Burst
-    function triggerCorePulse() {
-      const core = document.getElementById('reactor-core');
-      core.style.boxShadow = "0 0 70px var(--primary), inset 0 0 40px #ffffff";
+    // Arc Core Pulse Trigger
+    function pulseReactor() {
+      const core = document.getElementById('core');
+      core.style.boxShadow = "0 0 80px var(--primary), inset 0 0 40px #ffffff";
       logToTerminal("Arc Core repulsor burst triggered.");
+      speakVoice("Repulsor energy burst released.");
       playAudioTone(300, 'sawtooth', 0.3);
       setTimeout(() => core.style.boxShadow = "", 500);
     }
 
     // System Diagnostics
     function runDiagnostics() {
-      speakVoice("Initiating system diagnostics.");
+      speakVoice("Initiating suit diagnostics check.");
       logToTerminal("Running diagnostic protocols...");
-      setTimeout(() => logToTerminal("Repulsors: 100% Capacity"), 500);
-      setTimeout(() => logToTerminal("Targeting HUD: Calibrated"), 1000);
-      setTimeout(() => logToTerminal("Nanotech Armor Integrity: Optimal"), 1500);
+      setTimeout(() => logToTerminal("Repulsors: 100% Operational"), 600);
+      setTimeout(() => logToTerminal("Targeting HUD: Calibrated"), 1200);
+      setTimeout(() => logToTerminal("Nanotech Armor: Nominal Matrix"), 1800);
     }
 
-    // Overdrive Red Mode Toggle
+    // Overdrive Toggle (Palette Swap)
     let isOverdrive = false;
     function toggleOverdrive() {
       isOverdrive = !isOverdrive;
@@ -507,8 +499,8 @@
         document.documentElement.style.setProperty('--primary-glow', 'rgba(255, 51, 0, 0.5)');
         powerBar.style.width = "100%";
         powerVal.innerText = "130% [OVERCHARGED]";
-        logToTerminal("ALERT: OVERDRIVE MODE ENGAGED!");
-        speakVoice("Warning: Suit output overcharged.");
+        logToTerminal("WARNING: Overdrive mode engaged!");
+        speakVoice("Warning. Suit output overcharged.");
         playAudioTone(1200, 'square', 0.4);
       } else {
         document.documentElement.style.setProperty('--primary', '#00f3ff');
@@ -521,23 +513,7 @@
       }
     }
 
-    // Window Modal Handlers
-    function openWindow(id) {
-      document.querySelectorAll('.window-modal').forEach(w => w.classList.remove('active'));
-      const win = document.getElementById(id);
-      if(win) {
-        win.classList.add('active');
-        playAudioTone(900, 'sine', 0.08);
-      }
-    }
-
-    function closeWindow(id) {
-      const win = document.getElementById(id);
-      if(win) win.classList.remove('active');
-      playAudioTone(400, 'sine', 0.05);
-    }
-
-    // Trigger Protocols
+    // Protocol Actions
     function triggerProtocol(name) {
       logToTerminal(`Executing Protocol: [ ${name.toUpperCase()} ]`);
       speakVoice(`Executing protocol ${name}`);
