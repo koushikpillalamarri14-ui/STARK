@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>STARK OS - MARK LXXXV DASHBOARD</title>
+  <title>STARK OS - E.D.I.T.H. INTERFACE</title>
   <style>
     :root {
       --primary: #00f3ff;
@@ -104,7 +104,7 @@
     .btn-alert { border-color: var(--secondary); color: var(--secondary); }
     .btn-alert:hover { background: var(--secondary); color: #fff; box-shadow: 0 0 15px var(--secondary); }
 
-    /* Long Scrollable Container */
+    /* Container Layout */
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -114,7 +114,6 @@
       gap: 30px;
     }
 
-    /* Grid Layouts */
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -170,12 +169,14 @@
       justify-content: center;
       padding: 40px 20px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
     .arc-reactor {
       position: relative;
-      width: 260px;
-      height: 260px;
+      width: 280px;
+      height: 280px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -190,9 +191,9 @@
       box-shadow: 0 0 15px var(--primary-glow);
     }
 
-    .ring-outer { width: 250px; height: 250px; animation: spin 20s linear infinite; }
+    .ring-outer { width: 260px; height: 260px; animation: spin 20s linear infinite; }
     .ring-mid { 
-      width: 180px; height: 180px; 
+      width: 190px; height: 190px; 
       border-style: solid; 
       border-color: var(--secondary) transparent var(--secondary) transparent;
       animation: spin-reverse 10s linear infinite;
@@ -202,6 +203,33 @@
       background: radial-gradient(circle, #fff 0%, var(--primary) 60%, transparent 100%);
       box-shadow: 0 0 50px var(--primary), inset 0 0 25px #fff;
       animation: pulse 1.5s ease-in-out infinite alternate;
+      z-index: 5;
+    }
+
+    /* Expanding Pulse Shockwaves */
+    .pulse-shockwave {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 25px var(--primary), inset 0 0 15px var(--primary);
+      pointer-events: none;
+      animation: shockwave-expand 0.8s ease-out forwards;
+      z-index: 4;
+    }
+
+    @keyframes shockwave-expand {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+        border-width: 4px;
+      }
+      100% {
+        transform: scale(4.5);
+        opacity: 0;
+        border-width: 1px;
+      }
     }
 
     /* Metrics and Progress Bars */
@@ -280,13 +308,13 @@
   <!-- Header Navbar -->
   <header>
     <div class="brand">
-      STARK OS <span class="status-badge">MARK LXXXV</span>
+      E.D.I.T.H. SYSTEM <span class="status-badge">STARK SECURITY</span>
     </div>
     <div class="nav-buttons">
       <button class="btn" onclick="scrollToSection('hero')">Arc Core</button>
       <button class="btn" onclick="scrollToSection('telemetry')">Telemetry</button>
       <button class="btn" onclick="scrollToSection('radar')">Radar</button>
-      <button class="btn" onclick="scrollToSection('armory')">Armory</button>
+      <button class="btn" onclick="scrollToSection('armory')">Tactical</button>
     </div>
     <div id="clock">00:00:00 UTC</div>
   </header>
@@ -296,17 +324,17 @@
     
     <!-- Section 1: Arc Core Hero -->
     <section class="panel hero-panel" id="hero">
-      <h1 style="color:var(--primary); letter-spacing: 3px;">MARK LXXXV CORE MATRIX</h1>
-      <p style="font-size: 0.9rem; color: #a0c0d0; margin-top: 5px;">Tactical Defense & Voice Diagnostic Hub</p>
+      <h1 style="color:var(--primary); letter-spacing: 3px;">E.D.I.T.H. TACTICAL CORE</h1>
+      <p style="font-size: 0.9rem; color: #a0c0d0; margin-top: 5px;">Even Dead I'm The Hero // Global Drone & Armor Grid</p>
       
-      <div class="arc-reactor" onclick="pulseReactor()">
+      <div class="arc-reactor" id="arc-reactor" onclick="pulseReactor()">
         <div class="ring ring-outer"></div>
         <div class="ring ring-mid"></div>
         <div class="ring-core" id="core"></div>
       </div>
 
       <p style="font-size:0.85rem; color:var(--primary); letter-spacing: 2px;">
-        [ CLICK ARC REACTOR CORE TO TRIGGER REPULSOR PULSE ]
+        [ CLICK ARC CORE TO EMIT CONCENTRIC ENERGY PULSE SHOCKWAVES ]
       </p>
     </section>
 
@@ -315,69 +343,69 @@
       <!-- Suit Telemetry Panel -->
       <div class="panel">
         <div class="panel-title">
-          <span>Suit Status</span>
-          <span style="color:var(--accent);">NOMINAL</span>
+          <span>Global Defense Grid</span>
+          <span style="color:var(--accent);">ONLINE</span>
         </div>
         
         <div class="metric-group">
           <div class="metric-label">
-            <span>ARC POWER</span>
-            <span id="power-val">98%</span>
+            <span>ARC CORE POWER</span>
+            <span id="power-val">99%</span>
           </div>
           <div class="progress-track">
-            <div class="progress-fill" id="power-bar" style="width: 98%;"></div>
+            <div class="progress-fill" id="power-bar" style="width: 99%;"></div>
           </div>
         </div>
 
         <div class="metric-group">
           <div class="metric-label">
-            <span>NANOTECH DENSITY</span>
-            <span id="nano-val">92%</span>
+            <span>SATELLITE SYNC</span>
+            <span id="nano-val">100%</span>
           </div>
           <div class="progress-track">
-            <div class="progress-fill" id="nano-bar" style="width: 92%; background: var(--accent);"></div>
+            <div class="progress-fill" id="nano-bar" style="width: 100%; background: var(--accent);"></div>
           </div>
         </div>
 
         <div class="metric-group">
           <div class="metric-label">
-            <span>THRUSTER CAPACITY</span>
-            <span id="thrust-val">100%</span>
+            <span>DRONE MATRIX CAPACITY</span>
+            <span id="thrust-val">95%</span>
           </div>
           <div class="progress-track">
-            <div class="progress-fill" id="thrust-bar" style="width: 100%;"></div>
+            <div class="progress-fill" id="thrust-bar" style="width: 95%;"></div>
           </div>
         </div>
 
-        <button class="btn" onclick="runDiagnostics()">Run System Diagnostics</button>
-        <button class="btn btn-alert" onclick="toggleOverdrive()">Toggle Overdrive Mode</button>
+        <button class="btn" onclick="runDiagnostics()">Run E.D.I.T.H. Diagnostics</button>
+        <button class="btn btn-alert" onclick="toggleOverdrive()">Toggle Red Alert Mode</button>
       </div>
 
-      <!-- F.R.I.D.A.Y Voice & Controls -->
+      <!-- E.D.I.T.H Console -->
       <div class="panel">
         <div class="panel-title">
-          <span>F.R.I.D.A.Y Console</span>
+          <span>E.D.I.T.H. Console Log</span>
           <span style="color:var(--primary);">ACTIVE</span>
         </div>
         <div class="terminal" id="terminal">
-          > STARK OS Initialized...<br/>
-          > F.R.I.D.A.Y Voice AI Standby...<br/>
-          > All satellite connections verified.<br/>
+          > E.D.I.T.H. Interface Loaded...<br/>
+          > Glasses HUD synchronized.<br/>
+          > Awaiting security authorization...<br/>
         </div>
-        <button class="btn" onclick="speakVoice('F.R.I.D.A.Y voice system online and responding.')">Test Voice Feedback</button>
+        <button class="btn" onclick="speakEdith('Stand by. Accessing Stark security database.')">Authorize Glasses</button>
       </div>
 
-      <!-- Flight Systems Panel -->
+      <!-- Flight & Drone Systems Panel -->
       <div class="panel">
         <div class="panel-title">
-          <span>Flight Controls</span>
-          <span>AUTO-STABILIZED</span>
+          <span>Drone Orbital Array</span>
+          <span>SYNCED</span>
         </div>
         <p style="font-size:0.85rem; line-height: 1.5; color:#a0c0d0;">
-          Mach 3 atmosphere stabilizers enabled. Repulsor vectors aligned for urban low-altitude navigation.
+          300 Orbital Combat Drones active in low-Earth orbit. Visual illusion projectors ready.
         </p>
-        <button class="btn" onclick="triggerProtocol('Supersonic Flight Vector')">Deploy Thrusters</button>
-        <button class="btn" onclick="triggerProtocol('Hover Mode')">Engage Hover Mode</button>
+        <button class="btn" onclick="triggerProtocol('Drone Formation Gamma')">Deploy Drone Array</button>
+        <button class="btn" onclick="triggerProtocol('Cloaking Projection')">Engage Cloaking</button>
       </div>
     </section>
 
@@ -386,27 +414,27 @@
       <!-- Radar Tracking Panel -->
       <div class="panel">
         <div class="panel-title">
-          <span>Global Radar Satellite Track</span>
-          <span style="color:var(--secondary);">2 TARGETS IN RANGE</span>
+          <span>Orbital Target Radar</span>
+          <span style="color:var(--secondary);">TARGET LOCKED</span>
         </div>
         <div class="hud-map">
-          <div class="map-ping" style="top: 30%; left: 40%;"></div>
-          <div class="map-ping" style="top: 65%; left: 75%; background: var(--accent);"></div>
+          <div class="map-ping" style="top: 35%; left: 45%;"></div>
+          <div class="map-ping" style="top: 60%; left: 70%; background: var(--accent);"></div>
         </div>
-        <button class="btn" onclick="logToTerminal('Scanning orbital quadrant sector 04...')">Scan Target Sector</button>
+        <button class="btn" onclick="logToTerminal('Target locked on orbital satellite scanner.')">Lock Target</button>
       </div>
 
       <!-- Tactical Armory Panel -->
       <div class="panel" id="armory">
         <div class="panel-title">
-          <span>Tactical Armory Protocol</span>
+          <span>Tactical Defense Matrix</span>
           <span style="color:var(--accent);">ARMED</span>
         </div>
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <button class="btn" onclick="triggerProtocol('Repulsor Cannon Array')">Repulsor Cannons</button>
-          <button class="btn" onclick="triggerProtocol('Unibeam Core Overcharge')">Unibeam Core Array</button>
-          <button class="btn btn-alert" onclick="triggerProtocol('Micro-Missile Salvo')">Deploy Micro-Missiles</button>
-          <button class="btn btn-alert" onclick="triggerProtocol('House Party Protocol')">House Party Protocol</button>
+          <button class="btn" onclick="triggerProtocol('Tactical Repulsor Beam')">Tactical Repulsor</button>
+          <button class="btn" onclick="triggerProtocol('Orbital Drone Strike')">Targeted Drone Strike</button>
+          <button class="btn btn-alert" onclick="triggerProtocol('Barricade Shielding')">Engage Barricade</button>
+          <button class="btn btn-alert" onclick="triggerProtocol('Clean Slate Protocol')">Clean Slate Protocol</button>
         </div>
       </div>
     </section>
@@ -415,7 +443,7 @@
 
   <!-- Footer -->
   <footer>
-    <div>SYSTEM STATUS: NOMINAL // PROTOCOL STARK-85</div>
+    <div>SYSTEM STATUS: ONLINE // E.D.I.T.H. SECURITY PROTOCOL</div>
     <div>STARK INDUSTRIES DIGITAL ECOSYSTEM © 2026</div>
   </footer>
 
@@ -433,7 +461,7 @@
       document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Sound FX Synthesis using Web Audio API
+    // Sound FX Synthesis via Web Audio API
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playAudioTone(freq = 600, type = 'sine', duration = 0.1) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -449,13 +477,21 @@
       osc.stop(audioCtx.currentTime + duration);
     }
 
-    // Voice Synthesis (F.R.I.D.A.Y Voice)
-    function speakVoice(text) {
+    // E.D.I.T.H. Voice Synthesis
+    function speakEdith(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.pitch = 1.1;
-        utterance.rate = 1.0;
+        
+        // E.D.I.T.H Voice tuning: higher pitch, slightly faster, smooth cadence
+        utterance.pitch = 1.35;
+        utterance.rate = 1.05;
+
+        // Try selecting a female or robotic system voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const edithVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha') || v.name.includes('Female'));
+        if (edithVoice) utterance.voice = edithVoice;
+
         window.speechSynthesis.speak(utterance);
       }
     }
@@ -468,26 +504,42 @@
       playAudioTone(800, 'sine', 0.05);
     }
 
-    // Arc Core Pulse Trigger
+    // Arc Reactor Outward Pulse Animation
     function pulseReactor() {
+      const reactor = document.getElementById('arc-reactor');
       const core = document.getElementById('core');
-      core.style.boxShadow = "0 0 80px var(--primary), inset 0 0 40px #ffffff";
-      logToTerminal("Arc Core repulsor burst triggered.");
-      speakVoice("Repulsor energy burst released.");
-      playAudioTone(300, 'sawtooth', 0.3);
-      setTimeout(() => core.style.boxShadow = "", 500);
+      
+      // Core visual brightness spike
+      core.style.boxShadow = "0 0 90px var(--primary), inset 0 0 50px #ffffff";
+      
+      // Create expanding shockwave rings
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          const wave = document.createElement('div');
+          wave.className = 'pulse-shockwave';
+          reactor.appendChild(wave);
+          
+          // Remove ring after animation finishes
+          setTimeout(() => wave.remove(), 800);
+        }, i * 180);
+      }
+
+      logToTerminal("E.D.I.T.H. Arc Reactor outward pulse emitted.");
+      speakEdith("Energy pulse discharged.");
+      playAudioTone(350, 'sawtooth', 0.4);
+      setTimeout(() => core.style.boxShadow = "", 600);
     }
 
     // System Diagnostics
     function runDiagnostics() {
-      speakVoice("Initiating suit diagnostics check.");
+      speakEdith("Initiating E.D.I.T.H. security diagnostics.");
       logToTerminal("Running diagnostic protocols...");
-      setTimeout(() => logToTerminal("Repulsors: 100% Operational"), 600);
-      setTimeout(() => logToTerminal("Targeting HUD: Calibrated"), 1200);
-      setTimeout(() => logToTerminal("Nanotech Armor: Nominal Matrix"), 1800);
+      setTimeout(() => logToTerminal("Glasses HUD: Synchronized"), 600);
+      setTimeout(() => logToTerminal("Orbital Drones: 300 Standby"), 1200);
+      setTimeout(() => logToTerminal("Arc Energy Output: 100% Peak"), 1800);
     }
 
-    // Overdrive Toggle (Palette Swap)
+    // Overdrive Red Alert Toggle
     let isOverdrive = false;
     function toggleOverdrive() {
       isOverdrive = !isOverdrive;
@@ -498,17 +550,17 @@
         document.documentElement.style.setProperty('--primary', '#ff3300');
         document.documentElement.style.setProperty('--primary-glow', 'rgba(255, 51, 0, 0.5)');
         powerBar.style.width = "100%";
-        powerVal.innerText = "130% [OVERCHARGED]";
-        logToTerminal("WARNING: Overdrive mode engaged!");
-        speakVoice("Warning. Suit output overcharged.");
+        powerVal.innerText = "135% [RED ALERT]";
+        logToTerminal("RED ALERT: E.D.I.T.H. security overridden!");
+        speakEdith("Red alert. Maximum defense protocols engaged.");
         playAudioTone(1200, 'square', 0.4);
       } else {
         document.documentElement.style.setProperty('--primary', '#00f3ff');
         document.documentElement.style.setProperty('--primary-glow', 'rgba(0, 243, 255, 0.4)');
-        powerBar.style.width = "98%";
-        powerVal.innerText = "98%";
+        powerBar.style.width = "99%";
+        powerVal.innerText = "99%";
         logToTerminal("Systems restored to nominal parameters.");
-        speakVoice("Systems restored to normal.");
+        speakEdith("Systems restored to nominal parameters.");
         playAudioTone(500, 'sine', 0.2);
       }
     }
@@ -516,7 +568,7 @@
     // Protocol Actions
     function triggerProtocol(name) {
       logToTerminal(`Executing Protocol: [ ${name.toUpperCase()} ]`);
-      speakVoice(`Executing protocol ${name}`);
+      speakEdith(`Executing ${name}`);
     }
   </script>
 </body>
