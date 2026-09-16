@@ -104,7 +104,7 @@
     .btn-alert { border-color: var(--secondary); color: var(--secondary); }
     .btn-alert:hover { background: var(--secondary); color: #fff; box-shadow: 0 0 15px var(--secondary); }
 
-    /* Container Layout */
+    /* Layout Containers */
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -161,7 +161,7 @@
       justify-content: space-between;
     }
 
-    /* Arc Reactor Hero Section */
+    /* Arc Reactor & Thrust Generator */
     .hero-panel {
       display: flex;
       flex-direction: column;
@@ -175,8 +175,8 @@
 
     .arc-reactor {
       position: relative;
-      width: 280px;
-      height: 280px;
+      width: 300px;
+      height: 300px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -191,9 +191,9 @@
       box-shadow: 0 0 15px var(--primary-glow);
     }
 
-    .ring-outer { width: 260px; height: 260px; animation: spin 20s linear infinite; }
+    .ring-outer { width: 280px; height: 280px; animation: spin 20s linear infinite; }
     .ring-mid { 
-      width: 190px; height: 190px; 
+      width: 200px; height: 200px; 
       border-style: solid; 
       border-color: var(--secondary) transparent var(--secondary) transparent;
       animation: spin-reverse 10s linear infinite;
@@ -203,36 +203,56 @@
       background: radial-gradient(circle, #fff 0%, var(--primary) 60%, transparent 100%);
       box-shadow: 0 0 50px var(--primary), inset 0 0 25px #fff;
       animation: pulse 1.5s ease-in-out infinite alternate;
-      z-index: 5;
+      z-index: 10;
     }
 
-    /* Expanding Pulse Shockwaves */
+    /* Radial Thruster Repulsor Beams */
+    .thruster-beam {
+      position: absolute;
+      width: 6px;
+      height: 180px;
+      background: linear-gradient(to top, var(--primary), rgba(255, 255, 255, 0.9), transparent);
+      box-shadow: 0 0 25px var(--primary), 0 0 50px #fff;
+      pointer-events: none;
+      z-index: 5;
+      transform-origin: bottom center;
+      animation: thruster-blast 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    }
+
+    @keyframes thruster-blast {
+      0% {
+        transform: scaleY(0.1) rotate(var(--angle));
+        opacity: 1;
+      }
+      50% {
+        transform: scaleY(1.4) rotate(var(--angle));
+        opacity: 1;
+      }
+      100% {
+        transform: scaleY(2) rotate(var(--angle));
+        opacity: 0;
+      }
+    }
+
+    /* Shockwave Rings */
     .pulse-shockwave {
       position: absolute;
       width: 100px;
       height: 100px;
       border-radius: 50%;
       border: 3px solid var(--primary);
-      box-shadow: 0 0 25px var(--primary), inset 0 0 15px var(--primary);
+      box-shadow: 0 0 30px var(--primary), inset 0 0 15px var(--primary);
       pointer-events: none;
-      animation: shockwave-expand 0.8s ease-out forwards;
+      animation: shockwave-expand 0.7s ease-out forwards;
       z-index: 4;
     }
 
     @keyframes shockwave-expand {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-        border-width: 4px;
-      }
-      100% {
-        transform: scale(4.5);
-        opacity: 0;
-        border-width: 1px;
-      }
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(4.5); opacity: 0; }
     }
 
-    /* Metrics and Progress Bars */
+    /* Diagnostic Bars */
     .metric-group { display: flex; flex-direction: column; gap: 6px; }
     .metric-label { display: flex; justify-content: space-between; font-size: 0.85rem; }
     .progress-track {
@@ -271,7 +291,7 @@
       animation: ping 1.5s infinite;
     }
 
-    /* Terminal Window */
+    /* Terminal Console */
     .terminal {
       background: rgba(0, 0, 0, 0.75);
       border: 1px solid var(--glass-border);
@@ -284,7 +304,7 @@
       line-height: 1.5;
     }
 
-    /* Keyframe Animations */
+    /* Animations */
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(-360deg); } }
     @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; } }
@@ -308,7 +328,7 @@
   <!-- Header Navbar -->
   <header>
     <div class="brand">
-      E.D.I.T.H. SYSTEM <span class="status-badge">STARK SECURITY</span>
+      E.D.I.T.H. SYSTEM <span class="status-badge">STARK TACTICAL</span>
     </div>
     <div class="nav-buttons">
       <button class="btn" onclick="scrollToSection('hero')">Arc Core</button>
@@ -322,25 +342,24 @@
   <!-- Page Content Container -->
   <div class="container">
     
-    <!-- Section 1: Arc Core Hero -->
+    <!-- Section 1: Arc Core Hero & Repulsor Thrust -->
     <section class="panel hero-panel" id="hero">
-      <h1 style="color:var(--primary); letter-spacing: 3px;">E.D.I.T.H. TACTICAL CORE</h1>
-      <p style="font-size: 0.9rem; color: #a0c0d0; margin-top: 5px;">Even Dead I'm The Hero // Global Drone & Armor Grid</p>
+      <h1 style="color:var(--primary); letter-spacing: 3px;">E.D.I.T.H. ARC THRUSTER CORE</h1>
+      <p style="font-size: 0.9rem; color: #a0c0d0; margin-top: 5px;">Tactical Defense Grid & Repulsor Thruster Engine</p>
       
-      <div class="arc-reactor" id="arc-reactor" onclick="pulseReactor()">
+      <div class="arc-reactor" id="arc-reactor" onclick="fireReactorThrust()">
         <div class="ring ring-outer"></div>
         <div class="ring ring-mid"></div>
         <div class="ring-core" id="core"></div>
       </div>
 
       <p style="font-size:0.85rem; color:var(--primary); letter-spacing: 2px;">
-        [ CLICK ARC CORE TO EMIT CONCENTRIC ENERGY PULSE SHOCKWAVES ]
+        [ CLICK ARC CORE TO FIRE RADIAL REPULSOR THRUST BEAMS ]
       </p>
     </section>
 
     <!-- Section 2: Telemetry Metrics Grid -->
     <section class="grid-3" id="telemetry">
-      <!-- Suit Telemetry Panel -->
       <div class="panel">
         <div class="panel-title">
           <span>Global Defense Grid</span>
@@ -349,7 +368,7 @@
         
         <div class="metric-group">
           <div class="metric-label">
-            <span>ARC CORE POWER</span>
+            <span>ARC CORE THRUST</span>
             <span id="power-val">99%</span>
           </div>
           <div class="progress-track">
@@ -381,7 +400,6 @@
         <button class="btn btn-alert" onclick="toggleOverdrive()">Toggle Red Alert Mode</button>
       </div>
 
-      <!-- E.D.I.T.H Console -->
       <div class="panel">
         <div class="panel-title">
           <span>E.D.I.T.H. Console Log</span>
@@ -389,29 +407,27 @@
         </div>
         <div class="terminal" id="terminal">
           > E.D.I.T.H. Interface Loaded...<br/>
-          > Glasses HUD synchronized.<br/>
-          > Awaiting security authorization...<br/>
+          > Voice synth initialized.<br/>
+          > Glasses HUD active.<br/>
         </div>
-        <button class="btn" onclick="speakEdith('Stand by. Accessing Stark security database.')">Authorize Glasses</button>
+        <button class="btn" onclick="speakEdith('Hello Peter. Stand by while I scan the perimeter.')">Authorize Voice</button>
       </div>
 
-      <!-- Flight & Drone Systems Panel -->
       <div class="panel">
         <div class="panel-title">
           <span>Drone Orbital Array</span>
           <span>SYNCED</span>
         </div>
         <p style="font-size:0.85rem; line-height: 1.5; color:#a0c0d0;">
-          300 Orbital Combat Drones active in low-Earth orbit. Visual illusion projectors ready.
+          300 Tactical Combat Drones standby in low-Earth orbit. Visual illusion projectors armed.
         </p>
         <button class="btn" onclick="triggerProtocol('Drone Formation Gamma')">Deploy Drone Array</button>
         <button class="btn" onclick="triggerProtocol('Cloaking Projection')">Engage Cloaking</button>
       </div>
     </section>
 
-    <!-- Section 3: Radar and Armory Grid -->
+    <!-- Section 3: Radar and Tactical Grid -->
     <section class="grid-2" id="radar">
-      <!-- Radar Tracking Panel -->
       <div class="panel">
         <div class="panel-title">
           <span>Orbital Target Radar</span>
@@ -424,7 +440,6 @@
         <button class="btn" onclick="logToTerminal('Target locked on orbital satellite scanner.')">Lock Target</button>
       </div>
 
-      <!-- Tactical Armory Panel -->
       <div class="panel" id="armory">
         <div class="panel-title">
           <span>Tactical Defense Matrix</span>
@@ -456,12 +471,11 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Smooth Scroll Navigation
     function scrollToSection(id) {
       document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Sound FX Synthesis via Web Audio API
+    // Audio FX Generator
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playAudioTone(freq = 600, type = 'sine', duration = 0.1) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -477,22 +491,46 @@
       osc.stop(audioCtx.currentTime + duration);
     }
 
-    // E.D.I.T.H. Voice Synthesis
+    // E.D.I.T.H. Voice Filter Synthesis
+    let voicesList = [];
+    function loadVoices() {
+      if ('speechSynthesis' in window) {
+        voicesList = window.speechSynthesis.getVoices();
+      }
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
     function speakEdith(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
         
-        // E.D.I.T.H Voice tuning: higher pitch, slightly faster, smooth cadence
-        utterance.pitch = 1.35;
-        utterance.rate = 1.05;
+        // Play E.D.I.T.H. HUD chime beep before speech
+        playAudioTone(1200, 'sine', 0.08);
+        setTimeout(() => playAudioTone(1600, 'sine', 0.1), 80);
 
-        // Try selecting a female or robotic system voice if available
-        const voices = window.speechSynthesis.getVoices();
-        const edithVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha') || v.name.includes('Female'));
-        if (edithVoice) utterance.voice = edithVoice;
+        setTimeout(() => {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.pitch = 1.45; // High robotic tone like E.D.I.T.H.
+          utterance.rate = 1.05;  // Crisp, fast delivery
 
-        window.speechSynthesis.speak(utterance);
+          // Filter for female English voices (Samantha, Karen, Victoria, Zira, Google US English Female)
+          const edithVoice = voicesList.find(v => 
+            v.lang.includes('en') && (
+              v.name.includes('Samantha') || 
+              v.name.includes('Karen') || 
+              v.name.includes('Victoria') ||
+              v.name.includes('Zira') ||
+              v.name.includes('Female') ||
+              v.name.includes('Google US English')
+            )
+          );
+
+          if (edithVoice) utterance.voice = edithVoice;
+          window.speechSynthesis.speak(utterance);
+        }, 150);
       }
     }
 
@@ -504,42 +542,50 @@
       playAudioTone(800, 'sine', 0.05);
     }
 
-    // Arc Reactor Outward Pulse Animation
-    function pulseReactor() {
+    // Arc Core Repulsor Thrust Beam Animation
+    function fireReactorThrust() {
       const reactor = document.getElementById('arc-reactor');
       const core = document.getElementById('core');
       
-      // Core visual brightness spike
-      core.style.boxShadow = "0 0 90px var(--primary), inset 0 0 50px #ffffff";
-      
-      // Create expanding shockwave rings
-      for (let i = 0; i < 3; i++) {
+      // Arc core brightness surge
+      core.style.boxShadow = "0 0 100px var(--primary), inset 0 0 60px #ffffff";
+
+      // 1. Emit 8 Directional Thruster Beams outward from core
+      const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+      angles.forEach(angle => {
+        const beam = document.createElement('div');
+        beam.className = 'thruster-beam';
+        beam.style.setProperty('--angle', `${angle}deg`);
+        reactor.appendChild(beam);
+        setTimeout(() => beam.remove(), 600);
+      });
+
+      // 2. Emit expanding shockwaves
+      for (let i = 0; i < 2; i++) {
         setTimeout(() => {
           const wave = document.createElement('div');
           wave.className = 'pulse-shockwave';
           reactor.appendChild(wave);
-          
-          // Remove ring after animation finishes
-          setTimeout(() => wave.remove(), 800);
-        }, i * 180);
+          setTimeout(() => wave.remove(), 700);
+        }, i * 150);
       }
 
-      logToTerminal("E.D.I.T.H. Arc Reactor outward pulse emitted.");
-      speakEdith("Energy pulse discharged.");
-      playAudioTone(350, 'sawtooth', 0.4);
+      logToTerminal("Arc Core repulsor thrust beams fired!");
+      speakEdith("Repulsor thrust engaged.");
+      playAudioTone(250, 'sawtooth', 0.5);
       setTimeout(() => core.style.boxShadow = "", 600);
     }
 
-    // System Diagnostics
+    // Diagnostics
     function runDiagnostics() {
       speakEdith("Initiating E.D.I.T.H. security diagnostics.");
       logToTerminal("Running diagnostic protocols...");
       setTimeout(() => logToTerminal("Glasses HUD: Synchronized"), 600);
       setTimeout(() => logToTerminal("Orbital Drones: 300 Standby"), 1200);
-      setTimeout(() => logToTerminal("Arc Energy Output: 100% Peak"), 1800);
+      setTimeout(() => logToTerminal("Arc Repulsor Thrust: 100% Peak"), 1800);
     }
 
-    // Overdrive Red Alert Toggle
+    // Overdrive Toggle
     let isOverdrive = false;
     function toggleOverdrive() {
       isOverdrive = !isOverdrive;
@@ -565,7 +611,6 @@
       }
     }
 
-    // Protocol Actions
     function triggerProtocol(name) {
       logToTerminal(`Executing Protocol: [ ${name.toUpperCase()} ]`);
       speakEdith(`Executing ${name}`);
